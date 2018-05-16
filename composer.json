@@ -1,0 +1,13 @@
+{
+    "name": "denis909/yii2-captcha",
+    "keywords": ["yii2", "captcha"],
+    "license": "MIT",
+	"autoload": {
+		"psr-4": {
+			"denis909\\yii\\": "src/"
+		}
+	},
+    "require": {
+        "yiisoft/yii2": ">=2.0.4"
+    }
+}
