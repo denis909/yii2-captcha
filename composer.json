@@ -4,7 +4,7 @@
     "license": "MIT",
 	"autoload": {
 		"psr-4": {
-			"denis909\\yii\\": "src/"
+			"denis909\\yii\\captcha\\": "src/"
 		}
 	},
     "require": {

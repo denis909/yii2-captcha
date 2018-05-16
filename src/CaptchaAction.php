@@ -1,21 +1,42 @@
 <?php
 
-/**
- * Модифицированная версия капчи, теперь не надо её постоянно вводить 
- * при заполнении формы, но требуется ручной ресет после успешного 
- * сабмита формы.
- *
- * $captcha = $this->createAction('captcha');
- *	        
- * $captcha->reset();
-**/
+/*
 
-namespace denis909\yii;
+public function actions()
+{
+    return [
+        'captcha' => [
+            'class' => 'denis909\yii\captcha\CaptchaAction',
+            'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            'testLimit' => 10,
+            'width' => 150,
+            'height' => 49,
+            'offset' => 10,
+            'minLength' => 5,
+            'maxLength' => 5,
+            'padding' => 0,
+            'foreColor' => 0x4a4949,
+            //'resetValidCaptcha' => false                
+        ]
+    ];
+}
+
+Если включить resetValidCaptcha в false то надо вручную обнулять в контроллере после сабмита формы.
+
+$captcha = $this->createAction('captcha');
+	        
+$captcha->reset();
+
+*/
+
+namespace denis909\yii\captcha;
 
 use Yii;
 
 class CaptchaAction extends \yii\captcha\CaptchaAction
 {
+
+	public $resetValidCaptcha = true;
 
 	public function reset()
 	{
@@ -41,15 +62,9 @@ class CaptchaAction extends \yii\captcha\CaptchaAction
         
         $length = mt_rand($this->minLength, $this->maxLength);
         
-        //$letters = 'bcdfghjklmnpqrstvwxyz';
-        
         $letters = '123456789012345678901';
         
-        //$vowels = 'aeiou';
-        
         $vowels = '12345';
-        
-        //vowels = 'йцшщъфыджэюбья';
 
         $code = '';
         
@@ -64,6 +79,12 @@ class CaptchaAction extends \yii\captcha\CaptchaAction
                 $code .= $letters[mt_rand(0, 20)];
             }
         }
+
+        $length = strlen($code);
+
+        $pos = floor($length / 2);
+
+        $code = substr($code, 0, $pos) . '-' . substr($code, $pos);
         
         return $code;
     }
@@ -82,9 +103,14 @@ class CaptchaAction extends \yii\captcha\CaptchaAction
 
         $session[$name] = $session[$name] + 1;
 
-		if (/*$valid ||*/$session[$name] > $this->testLimit && $this->testLimit > 0)
+        if ($valid && $this->resetValidCaptcha)
+        {
+        	$this->reset();	
+        }
+
+		if ($session[$name] > $this->testLimit && $this->testLimit > 0)
 		{
-			$this->getVerifyCode(true);
+			$this->reset();
 		}
         
         return $valid;
