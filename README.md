@@ -131,8 +131,8 @@ public function rules()
 Об авторе
 ---------
 Здравствуйте, меня зовут Денис. Я занимаюсь разработкой веб-приложений 
-на PHP около 10 лет. Сейчас работаю на Yii 2 фреймворке. Владею PHP,
-MySQL, JavaScript(jQuery), HTML5(bootstrap). 
+на PHP около 10 лет. Работаю на Yii 2 фреймворке. Владею PHP, MySQL, 
+JavaScript(jQuery), HTML5(bootstrap). 
 
 Мой сайт: [denis909.spb.ru](http://denis909.spb.ru)
 
